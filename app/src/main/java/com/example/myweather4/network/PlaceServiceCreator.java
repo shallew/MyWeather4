@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServiceCreator {
+public class PlaceServiceCreator {
     private static final OkHttpClient okHttpClient= new OkHttpClient.Builder()
             .addInterceptor(new GzipRequestInterceptor())
             .build();

@@ -1,14 +1,19 @@
 package com.example.myweather4;
 
+
+import static com.example.myweather4.tool.WeatherApplication.chosenPlace;
+import static com.example.myweather4.tool.WeatherApplication.nowWeather;
+import static com.example.myweather4.tool.WeatherApplication.showMore;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.os.Build;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,14 +26,17 @@ import android.widget.TextView;
 
 import com.example.myweather4.model.Place;
 import com.example.myweather4.model.SearchCityResponse;
+import com.example.myweather4.model2.RealtimeResponse;
 import com.example.myweather4.network.PlaceSearchService;
-import com.example.myweather4.network.ServiceCreator;
+import com.example.myweather4.network.PlaceServiceCreator;
+import com.example.myweather4.network.RealtimeServiceCreator;
+import com.example.myweather4.network.RealtimeWeatherService;
 import com.example.myweather4.tool.WeatherApplication;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,12 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText searchEdit;
     private LinearLayout searchBar;
     private TextView weatherInfoText;
+    private LinearLayout mainBackground;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
@@ -57,8 +67,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         confirmBtn.setOnClickListener(this);
         weatherInfoText = (TextView) findViewById(R.id.main_info_view);
 
-        if (WeatherApplication.showMore) {
-            weatherInfoText.setText(WeatherApplication.chosenPlace.toString());
+        if (showMore) {
+//            weatherInfoText.setText(WeatherApplication.chosenPlace.toString());
+            mainToolbar.setTitle(chosenPlace.getName());
+            mainToolbar.setSubtitle("时区-" + chosenPlace.getTz() +
+                    " " + chosenPlace.getCountry() +
+                    " " + chosenPlace.getCountry());
+            RealtimeWeatherService realtimeWeatherService = (RealtimeWeatherService) RealtimeServiceCreator.create(RealtimeWeatherService.class);
+            realtimeWeatherService.getRealtimeWeatherInfo(chosenPlace.getId()).enqueue(new Callback<RealtimeResponse>() {
+                @Override
+                public void onResponse(Call<RealtimeResponse> call, Response<RealtimeResponse> response) {
+                    RealtimeResponse body = response.body();
+                    if (body != null) {
+                        Log.d("info", "body != null");
+                        if (body.getCode().equals("200")) {
+                            nowWeather = body.getNow();
+                            weatherInfoText.setText(body.toString());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RealtimeResponse> call, Throwable t) {
+                }
+            });
         }
 
     }
@@ -69,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String s = searchEdit.getText().toString();
             searchEdit.setText("");//清空搜索框
             //搜索城市
-            PlaceSearchService placeSearchService = (PlaceSearchService) ServiceCreator.create(PlaceSearchService.class);
+            PlaceSearchService placeSearchService = (PlaceSearchService) PlaceServiceCreator.create(PlaceSearchService.class);
             placeSearchService.searchCity(s).enqueue(new Callback<SearchCityResponse>() {
                 @Override
                 public void onResponse(Call<SearchCityResponse> call, Response<SearchCityResponse> response) {
@@ -99,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }).setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    WeatherApplication.chosenPlace = places.get(tem[0]);
-                                    WeatherApplication.showMore = true;
+                                    chosenPlace = places.get(tem[0]);
+                                    showMore = true;
                                     searchBar.setVisibility(View.GONE);
                                     recreate();//重新加载该活动的实例
                                 }

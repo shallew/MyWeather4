@@ -1,6 +1,7 @@
 package com.example.myweather4.network;
 
 import com.example.myweather4.model.SearchCityResponse;
+import com.example.myweather4.model2.RealtimeResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

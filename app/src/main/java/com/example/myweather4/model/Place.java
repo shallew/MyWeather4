@@ -10,6 +10,7 @@ public class Place {
     private String country;//该地区所属国家
     private String tz;//时区
     private String type;//地区类型
+    private String fxLink;//该地区的天气预报网页链接
 
     @Override
     public String toString() {
@@ -18,5 +19,29 @@ public class Place {
                 + "\n地区的上级行政区域：" + adm1
                 + "\n地区所属国家：" + country
                 + "\n地区所在的时区：" + tz;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getAdm1() {
+        return adm1;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getTz() {
+        return tz;
+    }
+
+    public String getFxLink() {
+        return fxLink;
     }
 }
