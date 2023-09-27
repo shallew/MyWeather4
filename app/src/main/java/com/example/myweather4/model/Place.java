@@ -44,4 +44,8 @@ public class Place {
     public String getFxLink() {
         return fxLink;
     }
+
+    public String getAdm2() {
+        return adm2;
+    }
 }

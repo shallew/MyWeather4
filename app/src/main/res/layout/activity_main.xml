@@ -6,15 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:id="@+id/main_background">
+    android:id="@+id/main_background"
+    android:background="#1f2b3e">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_view_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="天气预报"
-        android:background="?attr/colorPrimary"
-        android:id="@+id/main_view_toolbar"
-        />
+        app:titleTextColor="@color/white">
+        <requestFocus/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/toolbar_layout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/toolbar_title"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:id="@+id/toolbar_subtitle"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:clickable="true"
+                android:textColor="@color/white"
+                android:marqueeRepeatLimit="1" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,30 +51,39 @@
         android:id="@+id/search_barII"
         android:visibility="gone"
         >
+
         <EditText
+            android:id="@+id/search_place"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
+            android:background="#cee8ff"
             android:hint="例如：北京"
-            android:layout_marginStart="10dp"
-            android:id="@+id/search_place"
+            android:paddingLeft="10dp"
             tools:ignore="Autofill,TextFields" />
-        <Button
+
+        <android.widget.Button
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/confirm_btn"
+            android:background="#cee8ff"
             android:text="搜索" />
 
     </LinearLayout>
 
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/main_info_view"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/main_info_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            />
+    </ScrollView>
 
-        />
+
 
 
 </LinearLayout>

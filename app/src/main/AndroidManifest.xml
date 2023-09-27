@@ -2,7 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--    用于访问wifi网络信息，WiFi信息会用于网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--    获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!--    用于获取WiFi的获取权限，WiFi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--    用于读取SD卡数据，如果开发者使用了so动态加载功能并且把送文件放在了外置存储区域，则需要申请该权限，否则不需要-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <!--    用于向SD卡写入内存，写入离线定位数据-->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--    访问网络，用于进行网络定位-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:name=".tool.WeatherApplication"
         android:allowBackup="true"
@@ -15,6 +34,9 @@
         android:theme="@style/Theme.MyWeather4"
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ElNpykUZQoX39Fh6VDeNxdih9GweatE3"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -24,6 +46,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
     </application>
 
 </manifest>

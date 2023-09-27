@@ -3,10 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <item android:id="@+id/fab"
+        android:icon="@drawable/location"
+        android:title="Auto-Location"
+        app:showAsAction="always" />
     <item android:id="@+id/search"
         android:icon="@drawable/baseline_search_24"
         android:title="Search Place"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
+
 
 </menu>
